@@ -1,6 +1,14 @@
 # Docker Setup for Octane
 
-This document explains how to run Octane using Docker for both development and production environments.
+This Docker setup is for **production deployments only** (Kubernetes, cloud hosting, etc.).
+
+**For local development**, run Octane directly without Docker:
+```bash
+yarn install
+yarn build
+yarn dev
+# Access at http://localhost:3001
+```
 
 ## Prerequisites
 
@@ -8,44 +16,17 @@ This document explains how to run Octane using Docker for both development and p
 - `.env` file configured in `packages/server/`
 - `config.json` configured at root
 
-## Development
+## Production Build & Deploy
 
-### Build and run development environment:
+### Build production image:
 
 ```bash
-# Build development image
-docker build -f Dockerfile.dev -t octane:dev .
-
-# Run with volume mounting for hot reload
-# Maps container port 3000 to host port 3001
-docker run -p 3001:3000 \
-  -v $(pwd):/app \
-  -v /app/node_modules \
-  -v /app/packages/core/node_modules \
-  -v /app/packages/server/node_modules \
-  --env-file ./packages/server/.env \
-  octane:dev
+docker build -t octane:prod .
 ```
 
-**Features:**
-- Hot reload enabled
-- Source code mounted as volume
-- Changes reflect immediately
-- Runs on port 3001
-
-### Access the application:
-- Main page: http://localhost:3001
-- API info: http://localhost:3001/api
-
-## Production
-
-### Build and run production environment:
+### Run locally (testing):
 
 ```bash
-# Build production image
-docker build -f Dockerfile -t octane:prod .
-
-# Run production container
 # Maps container port 3000 to host port 3001
 docker run -p 3001:3000 \
   --env-file ./packages/server/.env \
@@ -54,27 +35,47 @@ docker run -p 3001:3000 \
   octane:prod
 ```
 
-**Features:**
-- Multi-stage build (smaller image)
+### Tag and push to registry (for Kubernetes):
+
+```bash
+# Tag with your registry
+docker tag octane:prod your-registry.io/octane:latest
+docker tag octane:prod your-registry.io/octane:0.1.0
+
+# Push to registry
+docker push your-registry.io/octane:latest
+docker push your-registry.io/octane:0.1.0
+```
+
+**Image Features:**
+- Multi-stage build (optimized size ~400MB)
 - Production dependencies only
-- Optimized for performance
-- Automatic restarts
+- Security hardened
+- Ready for Kubernetes/Helm
+
+## Access the application:
+- Main page: http://localhost:3001
+- API info: http://localhost:3001/api
 
 ## Environment Variables
 
-Make sure your `packages/server/.env` file contains:
+Your `packages/server/.env` file must contain:
 
 ```bash
 SECRET_KEY=<your_base58_encoded_secret_key>
 ```
 
+For Kubernetes deployments, these will be injected via Helm values/secrets (see Helm chart documentation).
+
 ## Configuration
 
 Ensure your `config.json` is properly configured with:
 - Token mint addresses
-- Token account addresses
+- Token account addresses  
 - RPC URL
 - Return signature settings
+
+The `config.json` is baked into the Docker image during build.
 
 ## Useful Commands
 
@@ -103,20 +104,22 @@ docker exec -it <container-id> sh
 docker rm <container-id>
 ```
 
-### Tag and push to registry (for Kubernetes/Helm):
+### Clean up images:
 ```bash
-# Tag the image
-docker tag octane:prod your-registry/octane:latest
+# Remove unused images
+docker image prune
 
-# Push to registry
-docker push your-registry/octane:latest
+# Remove specific image
+docker rmi octane:prod
 ```
 
-## Notes
+## Important Notes
 
-⚠️ **Security Warning:** The `keys/` directory is excluded from Docker images for security. If you need to include keys, mount them as volumes or use Docker secrets.
+⚠️ **Security:** The `keys/` directory is excluded from Docker images. For Kubernetes, use Helm to inject the `SECRET_KEY` via secrets.
 
-⚠️ **Environment:** Remember to update your `.env` file with production values when deploying to production.
+⚠️ **Environment:** Never commit `.env` files. Use Kubernetes secrets or Helm values for production deployments.
+
+⚠️ **Config:** The `config.json` is baked into the image. Update it before building for different environments.
 
 ## Troubleshooting
 
