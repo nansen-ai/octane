@@ -35,9 +35,9 @@ RUN yarn install --production --frozen-lockfile
 # Copy built files from builder
 COPY --from=builder /app/packages/core/dist ./packages/core/dist
 COPY --from=builder /app/packages/server/.next ./packages/server/.next
-COPY --from=builder /app/packages/server/public ./packages/server/public
 COPY --from=builder /app/packages/server/pages ./packages/server/pages
 COPY --from=builder /app/packages/server/next.config.js ./packages/server/
+COPY --from=builder /app/packages/server/src ./packages/server/src
 
 # Copy config file
 COPY config.json ./
