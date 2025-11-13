@@ -3,12 +3,15 @@
     "maxSignatures": 2,
     "lamportsPerSignature": 5000,
     "corsOrigin": true,
+    "returnSignature": {
+        "type": "allowAll"
+    },
     "endpoints": {
         "transfer": {
             "tokens": [
                 {
-                    "mint": "__PLACEHOLDER__",
-                    "account": "__PLACEHOLDER__",
+                    "mint": "ExkcJqX82R9RuSyRTtMbtiUMyNhVmzMCHs9qdLUyiNfQ",
+                    "account": "37BxaKHZsrLpr3UmRa9LMw92aNHzWC8U3auxPW7pekMY",
                     "decimals": 9,
                     "fee": 10000000
                 }
@@ -17,8 +20,8 @@
         "createAssociatedTokenAccount": {
             "tokens": [
                 {
-                    "mint": "__PLACEHOLDER__",
-                    "account": "__PLACEHOLDER__",
+                    "mint": "ExkcJqX82R9RuSyRTtMbtiUMyNhVmzMCHs9qdLUyiNfQ",
+                    "account": "37BxaKHZsrLpr3UmRa9LMw92aNHzWC8U3auxPW7pekMY",
                     "decimals": 9,
                     "fee": 10000000
                 }
@@ -27,8 +30,8 @@
         "whirlpoolsSwap": {
             "tokens": [
                 {
-                    "mint": "__PLACEHOLDER__",
-                    "account": "__PLACEHOLDER__",
+                    "mint": "ExkcJqX82R9RuSyRTtMbtiUMyNhVmzMCHs9qdLUyiNfQ",
+                    "account": "37BxaKHZsrLpr3UmRa9LMw92aNHzWC8U3auxPW7pekMY",
                     "decimals": 9,
                     "fee": 10000000
                 }

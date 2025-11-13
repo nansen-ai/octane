@@ -1,0 +1,48 @@
+# Dependencies
+node_modules
+packages/*/node_modules
+**/node_modules
+
+# Build outputs
+.next
+dist
+build
+*.log
+
+# Development files
+.git
+.gitignore
+*.md
+!README.md
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (will be passed via docker-compose)
+.env
+.env.local
+.env*.local
+
+# Test files
+coverage
+.nyc_output
+**/*.test.ts
+**/*.spec.ts
+
+# Keys (security - mount as volume instead)
+keys/
+*.json.key
+*.pem
+
+# Misc
+.cache
+tmp
+temp
+
