@@ -1,5 +1,5 @@
 {
-    "rpcUrl": "https://api.devnet.solana.com",
+    "rpcUrl": "https://rough-radial-glade.solana-mainnet.quiknode.pro/f70944fc375988db36f765441f0850af2fed94ec/",
     "maxSignatures": 2,
     "lamportsPerSignature": 5000,
     "corsOrigin": true,

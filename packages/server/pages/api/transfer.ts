@@ -44,7 +44,7 @@ export default async function (request: NextApiRequest, response: NextApiRespons
             cache
         );
 
-        if (config.returnSignature !== undefined) {
+        if (config.returnSignature !== undefined && config.returnSignature !== null) {
             if (!await isReturnedSignatureAllowed(
                 request,
                 config.returnSignature as ReturnSignatureConfigField
