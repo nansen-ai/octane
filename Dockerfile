@@ -1,5 +1,5 @@
 # Production Dockerfile for Octane
-FROM node:14-alpine AS builder
+FROM node:18-alpine AS builder
 
 # Install Python and build tools for native modules
 RUN apk add --no-cache python3 make g++
@@ -20,7 +20,7 @@ COPY . .
 RUN yarn build
 
 # Production stage
-FROM node:14-alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
