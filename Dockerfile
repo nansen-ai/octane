@@ -42,13 +42,22 @@ COPY --from=builder /app/packages/server/src ./packages/server/src
 # Copy config file
 COPY config.json ./
 
+# ====== ADD THIS SECTION ======
+# Copy custom entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+# ==============================
+
 # Expose port
 EXPOSE 3000
 
 # Set environment to production
 ENV NODE_ENV=production
 
-# Start production server
+# Set working directory for startup
 WORKDIR /app/packages/server
+
+# Start production server
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["yarn", "start"]
 
